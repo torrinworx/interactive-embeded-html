@@ -62,33 +62,15 @@ function Scene({ portal, ...props }) {
     v.unproject(state.camera)
     hand.current.rotation.x = THREE.MathUtils.lerp(hand.current.rotation.x, clicked ? -0.7 : -0.5, 0.2)
     hand.current.position.lerp({ x: v.x - 100, y: wheel.current + v.y, z: v.z }, 0.4)
-    state.camera.zoom = THREE.MathUtils.lerp(state.camera.zoom, clicked ? 0.9 : 0.7, clicked ? 0.025 : 0.15)
-    state.camera.position.lerp({ x: -state.pointer.x * 400, y: -state.pointer.y * 200, z: 1000 }, 0.1)
-    state.camera.lookAt(0, 0, 0)
-    state.camera.updateProjectionMatrix()
   })
   return (
     <group {...props} dispose={null}>
-      <Float object={nodes['Bg-stuff']} />
-      <Float object={nodes['Emoji-4']} />
-      <Float object={nodes['Emoji-2']} />
-      <Float object={nodes['Emoji-3']} />
-      <Float object={nodes['Emoji-1']} />
-      <Float object={nodes['Icon-text-2']} />
-      <Float object={nodes['Icon-like']} />
-      <Float object={nodes['Icon-star']} />
-      <Float object={nodes['Icon-play']} />
-      <Float object={nodes['Icon-text-1']} />
       <group ref={hand}>
         <Clone object={nodes['hand-r']} rotation-y={0.35} />
       </group>
-      <Clone object={nodes['Bubble-BG']} scale={1.25} />
       <FloatImpl floatIntensity={100} rotationIntensity={0.5} speed={1}>
-        <Float intensity={100} rotation={0.5} object={nodes['Bubble-LOGO']} position={[0, -0, 0]} scale={1.5} />
         <group position={[0, -50, 0]} rotation={[-0.15, 0, 0]}>
-          <Clone object={nodes['hand-l']} position={[80, 100, -150]} />
           <group name="phone" position={[-50, 0, -68]}>
-            <Clone object={[nodes['Rectangle 4'], nodes['Rectangle 3'], nodes['Boolean 2']]} />
             {/* Mask is a drei component that generates a stencil, we use the phone-screen as a mask, punching a hole into the canvas */}
             <Mask id={1} colorWrite={false} depthWrite={false} geometry={nodes.screen.geometry} castShadow receiveShadow position={[0, 0, 9.89]}>
               {/* We can drop the HTML inside, make it a 3d-transform and portal it to the dom container above */}
@@ -121,9 +103,3 @@ function Scene({ portal, ...props }) {
     </group>
   )
 }
-
-const Float = ({ object, intensity = 300, rotation = 1, ...props }) => (
-  <FloatImpl floatIntensity={intensity} rotationIntensity={rotation} speed={2}>
-    <Clone object={object} {...props} />
-  </FloatImpl>
-)
